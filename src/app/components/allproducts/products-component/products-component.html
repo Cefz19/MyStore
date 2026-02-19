@@ -1,0 +1,43 @@
+<p>
+    The amount {{ myShoppingCart.length }}
+</p>
+<p>
+    Total: ${{ total }}
+</p>
+<h1>All Products</h1>
+<div class="products__grid">
+    @for(product of products; track product.id) {
+    <app-product-component
+    [product]="product" 
+    (addedProduct)="onAddToShoppingCart($event)"
+    />
+    }
+</div>
+
+<!-- <p>
+    The Amount {{ myShoppingCart.length }}
+</p>
+<p>
+    Total: {{ total}}
+</p>
+<p>
+    Today: {{ today | date: 'short'}}
+</p> 
+<p>
+    Today: {{ today | timeAgoPipe }}
+</p>
+<p>
+    Another Today: {{ date | date: 'yyyy.dd.MM' }}
+</p>
+<p>
+    {{ 'HolA bAsScvaSSA ASADA' | uppercase }}
+</p> -->
+
+<!-- <div class="products__grid">
+    @for (product of products; track product.id) {
+    <app-product-component 
+    [product]="product" 
+    (addedProduct)="onAddToShoppingCart($event)" 
+    />
+    }
+</div> -->

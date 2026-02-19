@@ -1,0 +1,14 @@
+<div>
+    @if(img) {
+    <img 
+    (load)="imgLoader()" 
+    (error)="imgError()" 
+    [src]="img" 
+    [alt]="alt">
+    <!-- <h3>{{ counter }}</h3> -->
+     
+} @else {
+    <img [src]="imageDefault" [alt]="alt">
+}
+
+</div>

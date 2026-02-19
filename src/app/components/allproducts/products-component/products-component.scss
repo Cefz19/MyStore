@@ -1,0 +1,26 @@
+.products__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+//tables
+@media screen and (min-width: 40em) and (max-width: 63.9em) {
+    .products__grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+}
+
+//web
+@media screen and (min-width: 64em) {
+    .products__grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+}
