@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { DatePipe } from '@angular/common';
 import { UpperCasePipe } from '@angular/common';
 import { TimeAgoPipe } from '../../../pipes/time-ago-pipe';
@@ -21,34 +22,42 @@ import { ProductsService } from '../../../services/products.service';
   templateUrl: './products-component.html',
   styleUrls: ['./products-component.scss'],
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent implements OnInit{
   myShoppingCart: Product[] = [];
   total = 0;
   products: Product[] = [];
   // products: Product[] = [
   //   {
   //     id: '1',
-  //     name: 'El mejor libros',
+  //     title: 'El mejor libros',
   //     price: 565,
-  //     image: 'assets/images/books.jpg'
+  //     image: 'assets/images/books.jpg',
+  //     description: '',
+  //     category: '',
   //   },
   //   {
   //     id: '2',
-  //     name: 'Lentes casi nuevos',
+  //     title: 'Lentes casi nuevos',
   //     price: 356,
-  //     image: 'assets/images/glasses.jpg'
+  //     image: 'assets/images/glasses.jpg',
+  //     description: '',
+  //     category: '',
   //   },
   //   {
   //     id: '3',
-  //     name: 'Collecion de albunes',
+  //     title: 'Collecion de albunes',
   //     price: 565,
-  //     image: 'assets/images/album.jpg'
+  //     image: 'assets/images/album.jpg',
+  //     description: '',
+  //     category: '',
   //   },
   //   {
   //     id: '4',
-  //     name: 'La casa de ensueño',
+  //     title: 'La casa de ensueño',
   //     price: 1234,
-  //     image: 'assets/images/house.jpg'
+  //     image: 'assets/images/house.jpg',
+  //     description: '',
+  //     category: '',
   //   },
   // ]
 
@@ -59,29 +68,25 @@ export class ProductsComponent implements OnInit {
     this.myShoppingCart = this.storeService.getShoppingCart();
   }
 
-  ngOnInit(): void {
-    this.storeService.products$.subscribe((data) => {
-      this.products = data;
-      console.log(data);
-    });
-
-    // this.productsService.getAllProducts()
-    // .subscribe(data => {
+  ngOnInit() {
+    // this.storeService.products$.subscribe((data) => {
     //   this.products = data;
-    //   console.log(data)
-    // })
+    //   console.log(data);
+    // });
+    // this.storeService.loaderProduct();
 
-    this.storeService.loaderProduct();
+    this.productsService.getAllProducts()
+    .subscribe(data => {
+      this.products = data;
+      console.log(data)
+    })
+
+    
   }
 
   onAddToShoppingCart(product: Product) {
-    this.myShoppingCart.push(product);
     this.storeService.addProduct(product);
     this.total = this.storeService.getTotal();
-  }
-
-  trackByProductId(index: string, product: Product): string {
-    return product.id;
   }
 }
 

@@ -1,14 +1,17 @@
-<div>
-    @if(img) {
-    <img 
-    (load)="imgLoader()" 
-    (error)="imgError()" 
-    [src]="img" 
-    [alt]="alt">
-    <!-- <h3>{{ counter }}</h3> -->
-     
-} @else {
-    <img [src]="imageDefault" [alt]="alt">
-}
+<img 
+    (load)="imgLoader()"
+    (error)="imgError()"
+    [src]="img"
+    *ngIf="img; else elseImg"
+>
+<ng-template #elseImg>
+    <img [src]="imageDefault">
+</ng-template>
 
-</div>
+<!-- @if(img) {
+<img (load)="imgLoader()" (error)="imgError()" [src]="img" [alt]="alt">
+    <h3>{{ counter }}</h3> 
+
+} @else {
+<img [src]="imageDefault" [alt]="alt">
+} -->

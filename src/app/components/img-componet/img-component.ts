@@ -10,9 +10,11 @@ import {
   OnDestroy,
 } from '@angular/core';
 
+import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-img-component',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './img-component.html',
   styleUrls: ['./img-component.scss'],
 })

@@ -12,15 +12,16 @@ import { StoreService } from '../../../services/store.service';
 })
 export class NavComponent implements OnInit {
   activeMenu = false;
-  counter = 0;
+  // counter = 0;
 
-  constructor(private storeService: StoreService) {
+  // private storeService: StoreService
+  constructor() {
   }
 
   ngOnInit(): void {
-    this.storeService.myCart$.subscribe(products => {
-      this.counter = products.length;
-    }); 
+    // this.storeService.myCart$.subscribe(products => {
+    //   this.counter = products.length;
+    // }); 
   }
 
   toggleMenu() {

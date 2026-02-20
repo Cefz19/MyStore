@@ -7,6 +7,15 @@
 <h1>All Products</h1>
 
 
+<div class="products--grid">
+    <app-product-component
+    [product]="product"
+    *ngFor="let product of products"
+    (addedProduct)="onAddToShoppingCart($event)"
+    />
+</div>
+
+<!-- 
 <div *ngIf="products.length > 0; else loading" class="products__grid">
     @for(product of products; track product.id) {
     <app-product-component
@@ -17,4 +26,4 @@
 </div>
 <ng-template #loading>
     <p>Loading Products...</p>
-</ng-template>
+</ng-template> -->

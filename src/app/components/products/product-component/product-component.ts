@@ -17,7 +17,7 @@ import { HighlightDirective } from '../../../directive/highlight.directive';
 })
 export class ProductComponent {
   @Input() product: Product = {
-    id: '',
+    id: 0,
     title: '',
     price: 0,
     // description: '',
