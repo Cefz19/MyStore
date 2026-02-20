@@ -10,6 +10,7 @@ import { NavComponent } from "./components/nav/nav-component/nav-component";
     FormsModule,
     NavComponent,
     ProductsComponent,
+    RouterOutlet
 ],
   templateUrl: './app.html',
   styleUrls: ['./app.scss'],
