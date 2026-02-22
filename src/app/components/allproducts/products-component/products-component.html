@@ -1,19 +1,28 @@
-<p>
-    The amount {{ myShoppingCart.length }}
-</p>
-<p>
-    Total: ${{ total }}
-</p>
+<p>The amount {{ myShoppingCart.length }}</p>
+<p>Total: ${{ total }}</p>
 <h1>All Products</h1>
 
-
 <div class="products--grid">
-    <app-product-component
-    [product]="product"
-    *ngFor="let product of products"
-    (addedProduct)="onAddToShoppingCart($event)"
-    />
+  @for (product of products(); track product.id) {
+    <div>
+        <p>{{ product.title }}</p>
+      <app-product-component 
+      [product]="product" 
+      (addedProduct)="onAddToShoppingCart($event)" 
+      />
+    </div>
+  }
 </div>
+
+<!-- <div class="products--grid">
+  <div *ngFor="let product of products">
+    <p>{{ product.title }}</p>
+    <app-product-component
+      [product]="product"
+      (addedProduct)="onAddToShoppingCart($event)"
+    />
+  </div>
+</div> -->
 
 <!-- 
 <div *ngIf="products.length > 0; else loading" class="products__grid">

@@ -12,7 +12,7 @@
   </div>
 
   <!--  [ngClass]="{'active' : activeMenu}" -->
-  <div class="side-menu" [class.active]="activeMenu">
+  <div class="side-menu" [class.active]="activeMenu()">
     <button (click)="toggleMenu()">Close</button>
     <ul>
       <li><a href="">All</a></li>

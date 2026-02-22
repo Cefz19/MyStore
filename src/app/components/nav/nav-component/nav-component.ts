@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { StoreService } from '../../../services/store.service';
 // import { NgClass } from "../../../../../node_modules/@angular/common/types/_common_module-chunk";
 
@@ -11,7 +11,7 @@ import { StoreService } from '../../../services/store.service';
   styleUrls: ['./nav-component.scss'],
 })
 export class NavComponent implements OnInit {
-  activeMenu = false;
+  activeMenu = signal(false);
   // counter = 0;
 
   // private storeService: StoreService
@@ -25,7 +25,7 @@ export class NavComponent implements OnInit {
   }
 
   toggleMenu() {
-    this.activeMenu = !this.activeMenu;
+    this.activeMenu.update(prevState => !prevState)
   }
 
 }

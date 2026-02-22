@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, signal } from '@angular/core';
+
 
 import { DatePipe } from '@angular/common';
 import { UpperCasePipe } from '@angular/common';
@@ -14,7 +14,6 @@ import { ProductsService } from '../../../services/products.service';
   selector: 'app-products-component',
   imports: [
     ProductComponent,
-    CommonModule,
     // DatePipe,
     // UpperCasePipe,
     // TimeAgoPipe
@@ -25,7 +24,7 @@ import { ProductsService } from '../../../services/products.service';
 export class ProductsComponent implements OnInit{
   myShoppingCart: Product[] = [];
   total = 0;
-  products: Product[] = [];
+  products = signal<Product[]>([]);
   // products: Product[] = [
   //   {
   //     id: '1',
@@ -77,8 +76,8 @@ export class ProductsComponent implements OnInit{
 
     this.productsService.getAllProducts()
     .subscribe(data => {
-      this.products = data;
-      console.log(data)
+      this.products.set(data);
+      console.log('Productos cargados', this.products.length)
     })
 
     
