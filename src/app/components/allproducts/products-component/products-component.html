@@ -1,49 +1,37 @@
-<p>The amount {{ myShoppingCart.length }}</p>
-<p>Total: ${{ total }}</p>
-<p>
-  Today: {{ today  | date: 'short' }}
-</p>
-<p>
-  TodayAgo: {{ today | timeAgoPipe }}
-</p>
-<p>
-  Ahother date: {{ date | date: 'yyyy...dd...MM'}}
-</p>
-<p>
-  {{ 'hOLA Bascaro CCAS ' | uppercase}}
-</p>
-
+<button (click)="createNewProduct()">Create</button>
 <div class="products--grid">
   @for (product of products(); track product.id) {
-    <div>
-        <p>{{ product.title }}</p>
-      <app-product-component 
-      [product]="product" 
-      (addedProduct)="onAddToShoppingCart($event)" 
-      />
-    </div>
+  <div>
+    <p>{{ product.title }}</p>
+    <app-product-component [product]="product" (addedProduct)="onAddToShoppingCart($event)"
+      (showProduct)="onShowDetail($event)" />
+  </div>
   }
 </div>
 
-<!-- <div class="products--grid">
-  <div *ngFor="let product of products">
-    <p>{{ product.title }}</p>
-    <app-product-component
-      [product]="product"
-      (addedProduct)="onAddToShoppingCart($event)"
-    />
-  </div>
-</div> -->
+<div class="product-detail" [class.active]=" showProductDetail">
+  @if(productChosen) {
+  <div>
+    <button class="close-btn" (click)="toggleProductDetail()">Close</button>
+    
+    <swiper-container 
+    [slidesPerView]="1"
+    navigation="true" 
+    pagination="true" 
+    scrollbar="true"
+    >
+      @for (img of productChosen.images; track img) {
+      <swiper-slide>
+        <img [src]="img" [alt]="productChosen.title">
+      </swiper-slide>
+      }
+    </swiper-container>
 
-<!-- 
-<div *ngIf="products.length > 0; else loading" class="products__grid">
-    @for(product of products; track product.id) {
-    <app-product-component
-    [product]="product" 
-    (addedProduct)="onAddToShoppingCart($event)"
-    />
-    }
+    <div class="detail-content">
+      <h1>{{ productChosen.title }}</h1>
+      <p>{{ productChosen.description }}</p>
+    </div>
+    
+  </div>
+  }
 </div>
-<ng-template #loading>
-    <p>Loading Products...</p>
-</ng-template> -->

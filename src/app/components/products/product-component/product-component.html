@@ -1,7 +1,10 @@
-<app-img-component [img]="product.image" [alt]="product.title" />
+@if(product.images.length > 0){
+    <app-img-component [img]="product.images[0]" [alt]="product.title" />
+}
 <h2>{{ product.price | currency: 'MX' }}</h2>
 
  <!-- | reversePipe  -->
-<p>{{ product.title}}</p>
+<p>{{ product.title }}</p>
 <p appHighlightDirective>{{ product.description }}</p>
+<button (click)="onShowDetail()">See Details</button>
 <button (click)="onAddToCart()">Add Cart</button>
