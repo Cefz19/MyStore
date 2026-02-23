@@ -3,20 +3,21 @@ import { Component, OnInit, signal } from '@angular/core';
 
 import { DatePipe } from '@angular/common';
 import { UpperCasePipe } from '@angular/common';
-import { TimeAgoPipe } from '../../../pipes/time-ago-pipe';
+import { TimeAgoPipe } from '../../../pipes/time-ago.pipe';
 
 import { Product } from '../../../models/product.model';
 import { ProductComponent } from '../../products/product-component/product-component';
 import { StoreService } from '../../../services/store.service';
 import { ProductsService } from '../../../services/products.service';
 
+
 @Component({
   selector: 'app-products-component',
   imports: [
     ProductComponent,
-    // DatePipe,
-    // UpperCasePipe,
-    // TimeAgoPipe
+    DatePipe,
+    UpperCasePipe,
+    TimeAgoPipe
   ],
   templateUrl: './products-component.html',
   styleUrls: ['./products-component.scss'],
@@ -25,6 +26,8 @@ export class ProductsComponent implements OnInit{
   myShoppingCart: Product[] = [];
   total = 0;
   products = signal<Product[]>([]);
+  today = new Date();
+  date = new Date(2026, 1, 21);
   // products: Product[] = [
   //   {
   //     id: '1',

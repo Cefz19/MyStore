@@ -1,6 +1,17 @@
 <p>The amount {{ myShoppingCart.length }}</p>
 <p>Total: ${{ total }}</p>
-<h1>All Products</h1>
+<p>
+  Today: {{ today  | date: 'short' }}
+</p>
+<p>
+  TodayAgo: {{ today | timeAgoPipe }}
+</p>
+<p>
+  Ahother date: {{ date | date: 'yyyy...dd...MM'}}
+</p>
+<p>
+  {{ 'hOLA Bascaro CCAS ' | uppercase}}
+</p>
 
 <div class="products--grid">
   @for (product of products(); track product.id) {

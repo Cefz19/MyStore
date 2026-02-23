@@ -1,7 +1,7 @@
 <app-img-component [img]="product.image" [alt]="product.title" />
+<h2>{{ product.price | currency: 'MX' }}</h2>
 
-
-<h2>{{ product.price | currency: 'COP' }}</h2>
-<p>{{ product.title }}</p>
-<!-- <p appHighlightDirective>{{ product.name }}</p> -->
+ <!-- | reversePipe  -->
+<p>{{ product.title}}</p>
+<p appHighlightDirective>{{ product.description }}</p>
 <button (click)="onAddToCart()">Add Cart</button>
