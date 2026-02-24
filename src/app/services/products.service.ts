@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { CreateProductDTO, Product } from '../models/product.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { CreateProductDTO, Product, UpdateProductDTO } from '../models/product.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,7 +15,12 @@ export class ProductsService {
   constructor(private _http: HttpClient) {}
 
 
-  getAllProducts() : Observable<Product[]> {
+  getAllProducts(limit?: number, offset?: number) {
+    let params = new HttpParams();
+    if(limit && offset) {
+      params = params.set('limit', limit);
+      params = params.set('offset', offset);
+    }
     return this._http.get<Product[]>(`${this.urlApi}/api/v1/products`);
   }
 
@@ -23,7 +28,21 @@ export class ProductsService {
     return this._http.get<Product>(`${this.urlApi}/api/v1/products/${id}`);
   }
 
+  getProductsByPage(limit: number, offset: number) {
+    return this._http.get<Product[]>(`${this.urlApi}/api/v1/products/`, {
+      params: { limit, offset }
+    });
+  }
+
   create(dto: CreateProductDTO) {
     return this._http.post<Product>(`${this.urlApi}/api/v1/products`, dto);
+  }
+
+  update(id: number, dto: UpdateProductDTO) {
+    return this._http.put<Product>(`${this.urlApi}/api/v1/products/${id}`, dto)
+  }
+
+  delete(id: number) {
+    return this._http.delete<boolean>(`${this.urlApi}/api/v1/products/${id}`)
   }
 }

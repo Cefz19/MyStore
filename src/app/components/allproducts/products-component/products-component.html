@@ -7,13 +7,14 @@
       (showProduct)="onShowDetail($event)" />
   </div>
   }
+  <button (click)="loadMore()">Load more</button>
 </div>
 
 <div class="product-detail" [class.active]=" showProductDetail">
   @if(productChosen) {
   <div>
     <button class="close-btn" (click)="toggleProductDetail()">Close</button>
-    
+    <h1>{{ productChosen.title }}</h1>
     <swiper-container 
     [slidesPerView]="1"
     navigation="true" 
@@ -28,8 +29,9 @@
     </swiper-container>
 
     <div class="detail-content">
-      <h1>{{ productChosen.title }}</h1>
       <p>{{ productChosen.description }}</p>
+      <button (click)="updateProduct(productChosen)">Edit</button>
+      <button (click)="deleteProduct()">Delete</button>
     </div>
     
   </div>

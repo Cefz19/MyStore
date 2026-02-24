@@ -6,7 +6,7 @@ import { DatePipe } from '@angular/common';
 import { UpperCasePipe } from '@angular/common';
 import { TimeAgoPipe } from '../../../pipes/time-ago.pipe';
 
-import { CreateProductDTO, Product } from '../../../models/product.model';
+import { Product, CreateProductDTO, UpdateProductDTO } from '../../../models/product.model';
 import { ProductComponent } from '../../products/product-component/product-component';
 import { StoreService } from '../../../services/store.service';
 import { ProductsService } from '../../../services/products.service';
@@ -29,7 +29,7 @@ export class ProductsComponent implements OnInit {
   total = 0;
   products = signal<Product[]>([]);
   showProductDetail = false;
-  productChosen: Product = {
+  productChosen: Product | null = {
     id: 0,
     title: '',
     price: 0,
@@ -40,6 +40,8 @@ export class ProductsComponent implements OnInit {
       name: '',
     },
   };
+  limit = 10;
+  offset = 0;
   today = new Date();
   date = new Date(2026, 1, 21);
   // products: Product[] = [
@@ -85,15 +87,14 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.storeService.products$.subscribe((data) => {
-    //   this.products = data;
-    //   console.log(data);
-    // });
-    // this.storeService.loaderProduct();
+   
 
-    this.productsService.getAllProducts().subscribe((data) => {
-      this.products.set(data);
-      console.log('Productos cargados', this.products.length);
+    // this.productsService.getAllProducts().subscribe((data) => {
+    // this.products.set(data);
+    // });
+
+    this.productsService.getProductsByPage(10, 0).subscribe((data) => {
+    this.products.set(data);
     });
   }
 
@@ -117,13 +118,67 @@ export class ProductsComponent implements OnInit {
     const product: CreateProductDTO = {
       title: `New Product ${Date.now()}`,
       description: 'bla bla bla',
-      images: ['https://placeimg.com/640/480/any'],
+      images: ['https://placehold.co/600x400/transparent/F00'],
       price: 100,
       categoryId: 1,
     };
 
-    this.productsService.create(product).subscribe(data => {
-      this.products.update(prevData => [data, ... prevData])
+    this.productsService.create(product).subscribe((data) => {
+      this.products.update((prevData) => [data, ...prevData]);
+    });
+  }
+
+  updateProduct(changes: UpdateProductDTO) {
+    if (!this.productChosen) return;
+
+    const id = this.productChosen.id;
+
+    // ABSTRACCIÓN:
+    // Creamos el cuerpo de la petición combinando el producto actual con los cambios.
+    // Esto asegura que NUNCA falten campos obligatorios (price, description, etc.)
+    const dto: UpdateProductDTO = {
+      ...this.productChosen, // 1. Esparcimos los datos actuales
+      categoryId: this.productChosen.category.id, // 2. Mapeamos la categoría al ID
+      ...changes, // 3. Sobrescribimos SOLO con los cambios nuevos
+    };
+
+    this.productsService.update(id, dto).subscribe({
+      next: (updatedProduct) => {
+        this.products.update((prev) => {
+          const index = prev.findIndex((item) => item.id === id);
+          const newArray = [...prev];
+          newArray[index] = updatedProduct;
+          return newArray;
+        });
+        this.productChosen = updatedProduct;
+      },
+      error: (err) => console.error('Error abstracto:', err.error),
+    });
+  }
+
+  deleteProduct() {
+    if(!this.productChosen) return;
+    const id = this.productChosen.id;
+
+    this.productsService.delete(id)
+    .subscribe({
+      next: () => {
+        this.products.update((prev) => {
+          return prev.filter(item => item.id !== id);
+        });
+        this.productChosen = null;
+        this.showProductDetail = false;
+        console.log('Product delete with successful');
+      },
+      error: (err) => console.error('Error delete: ', err.error),
+    })
+  }
+
+  loadMore() {
+    this.productsService.getProductsByPage(this.limit, this.offset)
+    .subscribe(data => {
+    this.products.set(data);
+    this.offset += this.limit;
     });
   }
 }
