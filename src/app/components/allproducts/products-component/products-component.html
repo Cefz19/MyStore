@@ -1,4 +1,6 @@
 <button (click)="createNewProduct()">Create</button>
+<button (click)="onShowDetail(123456)">Details not found</button>
+
 <div class="products--grid">
   @for (product of products(); track product.id) {
   <div>
@@ -11,6 +13,7 @@
 </div>
 
 <div class="product-detail" [class.active]=" showProductDetail">
+  {{ statusDetail }}
   @if(productChosen) {
   <div>
     <button class="close-btn" (click)="toggleProductDetail()">Close</button>

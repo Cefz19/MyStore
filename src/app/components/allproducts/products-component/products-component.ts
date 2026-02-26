@@ -42,6 +42,7 @@ export class ProductsComponent implements OnInit {
   };
   limit = 10;
   offset = 0;
+  statusDetail: 'loading' | 'success' | 'error' | 'init' = 'init';
   today = new Date();
   date = new Date(2026, 1, 21);
   // products: Product[] = [
@@ -108,9 +109,18 @@ export class ProductsComponent implements OnInit {
   }
 
   onShowDetail(id: number) {
-    this.productsService.getProdut(id).subscribe((data) => {
-      this.toggleProductDetail();
+    this.statusDetail = 'loading';
+    this.toggleProductDetail();
+    this.productsService.getProdut(id)
+    .subscribe({
+      next: (data) => {
       this.productChosen = data;
+      this.statusDetail = 'success';
+    },
+    error: (errorMeg) => {
+      window.alert(errorMeg);
+      this.statusDetail = 'error';
+    }
     });
   }
 
