@@ -2,6 +2,9 @@ import { Component, OnInit, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core
 
 import { CommonModule } from '@angular/common';
 
+import { zip } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
 import { DatePipe } from '@angular/common';
 import { UpperCasePipe } from '@angular/common';
 import { TimeAgoPipe } from '../../../pipes/time-ago.pipe';
@@ -122,6 +125,22 @@ export class ProductsComponent implements OnInit {
       this.statusDetail = 'error';
     }
     });
+  }
+
+  readAndUpdate(id: number) {
+    //Callback Hell
+    this.productsService.getProdut(id)
+    .pipe(
+      switchMap((product) => this.productsService.update(product.id, {title: 'chage'})),
+    )
+    .subscribe(data => {
+      console.log(data);
+    })
+    this.productsService.fetchReadAndUpdate(id, {title: 'change'})
+    .subscribe(response => {
+      const read = response[0];
+      const update = response[1];
+    })
   }
 
   createNewProduct() {

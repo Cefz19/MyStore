@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { CreateProductDTO, Product, UpdateProductDTO } from '../models/product.model';
-import { retry, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { retry, catchError, map } from 'rxjs/operators';
+import { throwError, zip } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 
@@ -10,49 +10,75 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class ProductsService {
-
   // urlApi: string= 'https://fakestoreapi.com';
-   private urlApi = `${environment.API_URL}/api/v1/products/`;
+  private urlApi = `${environment.API_URL}/api/v1/products/`;
   //  private urlApi = 'https://api.escuelaaajs.co';
   // urlApi: string= 'https://young-sands-07814.herokuapp.com/api/products';
 
   constructor(private _http: HttpClient) {}
 
-
   getAllProducts(limit?: number, offset?: number) {
     let params = new HttpParams();
-    if(limit && offset) {
-      params = params.set('limit', limit);
-      params = params.set('offset', offset);
+    if (limit !== undefined && offset !== undefined) {
+      params = params.set('limit', limit).set('offset', offset);
     }
-    return this._http.get<Product[]>(`${this.urlApi}`, { params })
-    .pipe(
-      retry(3)
+    // if(limit && offset) {
+    //   params = params.set('limit', limit);
+    //   params = params.set('offset', offset);
+    // }
+
+    return this._http.get<Product[]>(`${this.urlApi}`, { params }).pipe(
+      retry(3),
+      map((product) =>
+        product.map((item) => ({
+          ...item,
+          taxes: item.price * 0.19,
+        })),
+      ),
     );
   }
 
   getProdut(id: number) {
-    return this._http.get<Product>(`${this.urlApi}${id}`)
-    .pipe(
-      catchError((error: HttpErrorResponse) =>{
-        if(error.status === HttpStatusCode.Conflict) {
-          return throwError('Something this is fatal in the server')
+    return this._http.get<Product>(`${this.urlApi}${id}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === HttpStatusCode.Conflict) {
+          return throwError('Something this is fatal in the server');
         }
-        if(error.status === HttpStatusCode.NotFound) {
-          return throwError('The product don`t exitis ')
+        if (error.status === HttpStatusCode.NotFound) {
+          return throwError('The product don`t exitis ');
         }
-        if(error.status === HttpStatusCode.Unauthorized) {
-          return throwError('Permission Denegate')
+        if (error.status === HttpStatusCode.Unauthorized) {
+          return throwError('Permission Denegate');
         }
-        return throwError('Ups something fatal')
-      })
+        return throwError('Ups something fatal');
+      }),
     );
   }
 
+  //Callback Hell
+  fetchReadAndUpdate(id: number, dto: UpdateProductDTO){
+    return zip(
+      this.getProdut(id),
+      this.update(id, dto),
+    )
+    
+  }
+
   getProductsByPage(limit: number, offset: number) {
-    return this._http.get<Product[]>(`${this.urlApi}`, {
-      params: { limit, offset }
-    });
+    let params = new HttpParams().set('limit', limit).set('offset', offset);
+
+    return this._http.get<Product[]>(`${this.urlApi}`, { params }).pipe(
+      retry(3),
+      map((products) =>
+        products.map((item) => ({
+          ...item,
+          taxes: item.price * 0.19, // 👈 Agrega esto aquí también
+        })),
+      ),
+    );
+    // return this._http.get<Product[]>(`${this.urlApi}`, {
+    //   params: { limit, offset }
+    // });
   }
 
   create(dto: CreateProductDTO) {
@@ -60,10 +86,10 @@ export class ProductsService {
   }
 
   update(id: number, dto: UpdateProductDTO) {
-    return this._http.put<Product>(`${this.urlApi}${id}`, dto)
+    return this._http.put<Product>(`${this.urlApi}${id}`, dto);
   }
 
   delete(id: number) {
-    return this._http.delete<boolean>(`${this.urlApi}${id}`)
+    return this._http.delete<boolean>(`${this.urlApi}${id}`);
   }
 }
