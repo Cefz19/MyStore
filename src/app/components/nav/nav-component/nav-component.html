@@ -37,7 +37,14 @@
       </ul>
     </nav>
     <div class="info">
-      <div class="account">molanddise@mail.com</div>
+
+      <div class="account">
+        @if (!profile()){
+        <button (click)="login()">Login</button>
+        } @else {
+        <p>{{ profile()?.email }}</p>
+        }
+      </div>
       <div>
         <a href="">
           <img src="assets/svg/icon_shopping_cart.svg" alt="logo">

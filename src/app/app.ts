@@ -7,6 +7,7 @@ import { NavComponent } from './components/nav/nav-component/nav-component';
 
 import { AuthService } from './services/auth.service';
 import { UsersService } from './services/users.service';
+
 @Component({
   selector: 'app-root',
   imports: [FormsModule, NavComponent, ProductsComponent, RouterOutlet],
@@ -16,8 +17,9 @@ import { UsersService } from './services/users.service';
 export class App {
   protected readonly title = signal('my-store');
 
+  // token =  '';
+
   constructor(
-    private authService: AuthService,
     private usersService: UsersService,
   ) {}
 
@@ -27,18 +29,28 @@ export class App {
         name: 'Sebas',
         email: 'sebas@mail.com',
         password: '1212',
+        avatar: 'https://picsum.photos',
       })
       .subscribe((rta) => {
         console.log(rta);
       });
   }
 
-  login() {
-    this.authService.login('sebas@mail.com', '1212')
-    .subscribe((rta) => {
-      console.log(rta.access_token);
-    });
-  }
+  // login() {
+  //   this.authService.login('sebas@mail.com', '1212')
+  //   .subscribe((rta) => {
+  //     this.token = rta.access_token;
+  //     // console.log(rta.access_token);
+  //   });
+  // }
+
+  // getProfile() {
+  //   this.authService.profile(this.token)
+  //   .subscribe(profile => {
+  //     console.log(profile);
+      
+  //   })
+  // }
 
   // imgParent = '';
   // showImg = true;

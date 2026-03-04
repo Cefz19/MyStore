@@ -41,27 +41,37 @@ export class ProductsService {
   getProdut(id: number) {
     return this._http.get<Product>(`${this.urlApi}${id}`).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === HttpStatusCode.Conflict) {
-          return throwError('Something this is fatal in the server');
+        let message = 'Ups, something went wrong';
+
+        switch (error.status) {
+          case HttpStatusCode.Conflict:
+            message = 'Critical server error';
+            break;
+          case HttpStatusCode.NotFound:
+            message = 'The product does not exit';
+            break;
+          case HttpStatusCode.Unauthorized:
+            message = 'Permission denied';
+            break;
         }
-        if (error.status === HttpStatusCode.NotFound) {
-          return throwError('The product don`t exitis ');
-        }
-        if (error.status === HttpStatusCode.Unauthorized) {
-          return throwError('Permission Denegate');
-        }
-        return throwError('Ups something fatal');
+        return throwError(() => new Error(message));
+        // if (error.status === HttpStatusCode.Conflict) {
+        //   return throwError('Something this is fatal in the server');
+        // }
+        // if (error.status === HttpStatusCode.NotFound) {
+        //   return throwError('The product don`t exitis ');
+        // }
+        // if (error.status === HttpStatusCode.Unauthorized) {
+        //   return throwError('Permission Denegate');
+        // }
+        // return throwError('Ups something fatal');
       }),
     );
   }
 
   //Callback Hell
-  fetchReadAndUpdate(id: number, dto: UpdateProductDTO){
-    return zip(
-      this.getProdut(id),
-      this.update(id, dto),
-    )
-    
+  fetchReadAndUpdate(id: number, dto: UpdateProductDTO) {
+    return zip(this.getProdut(id), this.update(id, dto));
   }
 
   getProductsByPage(limit: number, offset: number) {

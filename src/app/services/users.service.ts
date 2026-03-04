@@ -9,6 +9,8 @@ import { User, CreateUserDTO } from '../models/user.model';
   providedIn: 'root',
 })
 export class UsersService {
+
+  
   private urlApi = `${environment.API_URL}/api/v1/users`;
   constructor(private _http: HttpClient) {}
 
