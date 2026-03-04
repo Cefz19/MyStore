@@ -39,20 +39,26 @@ export class NavComponent implements OnInit {
 
   login() {
     this.authService.loginAndGet('sebas@mail.com', '1212')
-    .subscribe(()=> {
-      this.profile()
+    .subscribe({
+      next: (user) => {
+        this.profile.set(user)
+      },
+      error: (err) =>  {
+        console.error('Error in the login o profile', err);
+      }
+    }
       // this.token.set(rta.access_token)
       // console.log(this.token);
       // this.token = rta.access_token;
       // console.log('Token recibido:', )
       // this.getProfile()
-    });
+    );
   }
 
-  // getProfile() {
-  //   this.authService.getProfile()
-  //   .subscribe(user => {
-  //     this.profile.set(user);
-  //   });
-  // }
+  getProfile() {
+    this.authService.getProfile()
+    .subscribe(user => {
+      this.profile.set(user);
+    });
+  }
 }

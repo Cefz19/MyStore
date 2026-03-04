@@ -31,6 +31,8 @@
     "@angular/platform-browser": "^21.1.5",
     "@angular/router": "^21.1.5",
     "date-fns": "^4.1.0",
+    "file-server": "^2.2.1",
+    "npm": "^11.11.0",
     "rxjs": "~7.8.0",
     "swiper": "^12.1.2",
     "tslib": "^2.3.0"

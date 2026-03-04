@@ -6,6 +6,7 @@ import { register } from 'swiper/element/bundle';
 
 import { routes } from './app.routes';
 import { timeInterceptor } from './interceptors/time-interceptor';
+import { tokenInterceptor } from './interceptors/token-interceptor';
 
 
 register();
@@ -18,7 +19,7 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withInterceptors([
         timeInterceptor,
-        timeInterceptor,
+        tokenInterceptor,
       ])
   ),
 

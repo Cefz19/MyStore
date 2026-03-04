@@ -4,6 +4,8 @@ import { CreateProductDTO, Product, UpdateProductDTO } from '../models/product.m
 import { retry, catchError, map } from 'rxjs/operators';
 import { throwError, zip } from 'rxjs';
 
+import { checkToken } from '../interceptors/time-interceptor';
+
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -27,7 +29,7 @@ export class ProductsService {
     //   params = params.set('offset', offset);
     // }
 
-    return this._http.get<Product[]>(`${this.urlApi}`, { params }).pipe(
+    return this._http.get<Product[]>(`${this.urlApi}`, { params, context: checkToken() }).pipe(
       retry(3),
       map((product) =>
         product.map((item) => ({
