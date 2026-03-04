@@ -1,12 +1,14 @@
 import { Component, signal } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 
 import { FormsModule } from '@angular/forms';
 import { ProductsComponent } from './components/allproducts/products-component/products-component';
 import { NavComponent } from './components/nav/nav-component/nav-component';
 
-import { AuthService } from './services/auth.service';
 import { UsersService } from './services/users.service';
+import { FileService } from './services/file.service';
+
 
 @Component({
   selector: 'app-root',
@@ -18,9 +20,12 @@ export class App {
   protected readonly title = signal('my-store');
 
   // token =  '';
+  imgRta: SafeUrl | string = '';
 
   constructor(
     private usersService: UsersService,
+    private fileService: FileService,
+    private sanitizer: DomSanitizer
   ) {}
 
   createUser() {
@@ -36,6 +41,26 @@ export class App {
       });
   }
 
+  downloadPDF() {
+    this.fileService.getFile('my-pdf', 'raw.githubusercontent.com', 'application/pdf').subscribe({
+      next: () => console.log('Descargado con éxito'),
+      error: (error) => console.error('Error de red o CORS:', error),
+    });
+  }
+
+  onUpload(event: Event) {
+    const element = event.target as HTMLInputElement;
+    const file = element.files?.item(0);
+    if (file) {
+      this.fileService.uploadFile(file)
+      .subscribe((rta) => {
+        console.log('Response serve', rta);
+        
+        this.imgRta =  this.sanitizer.bypassSecurityTrustUrl(rta.location);
+      });
+    }
+  }
+
   // login() {
   //   this.authService.login('sebas@mail.com', '1212')
   //   .subscribe((rta) => {
@@ -48,7 +73,7 @@ export class App {
   //   this.authService.profile(this.token)
   //   .subscribe(profile => {
   //     console.log(profile);
-      
+
   //   })
   // }
 

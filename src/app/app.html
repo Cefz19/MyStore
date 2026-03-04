@@ -3,7 +3,15 @@
 
 <button (click)="createUser()">Create User</button>
 <a href="/assets/file/files.txt" download>Download</a>
-
+<p>
+    <button (click)="downloadPDF()">Download</button>
+</p>
+<p>
+    <input type="file" (change)="onUpload($event)">
+    @if (!imgRta) {
+        <img [src]="imgRta">
+    }
+</p>
 <br>
 <main>
     <app-products-component></app-products-component>
