@@ -9,7 +9,6 @@ import { NavComponent } from './components/nav/nav-component/nav-component';
 import { UsersService } from './services/users.service';
 import { FileService } from './services/file.service';
 
-
 @Component({
   selector: 'app-root',
   imports: [FormsModule, NavComponent, ProductsComponent, RouterOutlet],
@@ -20,12 +19,13 @@ export class App {
   protected readonly title = signal('my-store');
 
   // token =  '';
-  imgRta: SafeUrl | string = '';
+  imgRta: SafeUrl | string | null = null;
+  urlPure: string = '';
 
   constructor(
     private usersService: UsersService,
     private fileService: FileService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
   ) {}
 
   createUser() {
@@ -52,12 +52,19 @@ export class App {
     const element = event.target as HTMLInputElement;
     const file = element.files?.item(0);
     if (file) {
-      this.fileService.uploadFile(file)
-      .subscribe((rta) => {
+      const localUrl = URL.createObjectURL(file);
+      this.imgRta = this.sanitizer.bypassSecurityTrustUrl(localUrl);
+      this.fileService.uploadFile(file).subscribe((rta) => {
         console.log('Response serve', rta);
-        
-        this.imgRta =  this.sanitizer.bypassSecurityTrustUrl(rta.location);
+        this.urlPure = rta.location;
+        this.imgRta = this.sanitizer.bypassSecurityTrustUrl(rta.location);
       });
+    }
+  }
+
+  openImage() {
+    if (this.urlPure) {
+      window.open(this.urlPure, '_blank');
     }
   }
 

@@ -4,22 +4,21 @@
 <button (click)="createUser()">Create User</button>
 <a href="/assets/file/files.txt" download>Download</a>
 <p>
-    <button (click)="downloadPDF()">Download</button>
+  <button (click)="downloadPDF()">Download</button>
 </p>
 <p>
-    <input type="file" (change)="onUpload($event)">
-    @if (!imgRta) {
-        <img [src]="imgRta">
-    }
+  <input type="file" (change)="onUpload($event)" />
+  @if (imgRta) {
+
+  <a [href]="urlPure" target="_blank" rel="noopener noreferrer">
+    <img [src]="imgRta" (click)="openImage()" style="cursor: pointer; width: 200px; height: 200px" />
+  </a>
+  }
 </p>
-<br>
+<br />
 <main>
-    <app-products-component></app-products-component>
+  <app-products-component></app-products-component>
 </main>
-
-
-
-
 
 <!-- <p><input type="text" [(ngModel)]="imgParent"></p>
 <button (click)="toggleImg()">Toggle Img</button>
