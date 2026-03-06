@@ -1,1 +1,5 @@
-<app-products-component />
+<app-products-component 
+[products]="products()"
+(productDeleted)="onDeleteProduct($event)"
+(loadMore)="onLoadMore()"
+/>

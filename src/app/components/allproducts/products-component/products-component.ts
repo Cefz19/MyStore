@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, input, output } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
@@ -27,10 +27,17 @@ import { ProductsService } from '../../../services/products.service';
   styleUrls: ['./products-component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent {
   myShoppingCart: Product[] = [];
   total = 0;
-  products = signal<Product[]>([]);
+
+  products = input<Product[]>([]);
+  productDeleted = output<number>();
+  productAdded = output<Product>();
+  productUpdated = output<Product>();
+  loadMore = output<void>()
+
+
   showProductDetail = false;
   productChosen: Product | null = {
     id: 0,
@@ -90,17 +97,15 @@ export class ProductsComponent implements OnInit {
     this.myShoppingCart = this.storeService.getShoppingCart();
   }
 
-  ngOnInit() {
-   
-
+  // ngOnInit() {
     // this.productsService.getAllProducts().subscribe((data) => {
     // this.products.set(data);
     // });
 
-    this.productsService.getProductsByPage(10, 0).subscribe((data) => {
-    this.products.set(data);
-    });
-  }
+  //   this.productsService.getProductsByPage(10, 0).subscribe((data) => {
+  //   this.products.set(data);
+  //   });
+  // }
 
   onAddToShoppingCart(product: Product) {
     this.storeService.addProduct(product);
@@ -152,9 +157,14 @@ export class ProductsComponent implements OnInit {
       categoryId: 1,
     };
 
-    this.productsService.create(product).subscribe((data) => {
-      this.products.update((prevData) => [data, ...prevData]);
-    });
+    this.productsService.create(product)
+    .subscribe((data) => {
+      this.productAdded.emit(data)
+    })
+
+    // this.productsService.create(product).subscribe((data) => {
+    //   this.products.update((prevData) => [data, ...prevData]);
+    // });
   }
 
   updateProduct(changes: UpdateProductDTO) {
@@ -171,18 +181,26 @@ export class ProductsComponent implements OnInit {
       ...changes, // 3. Sobrescribimos SOLO con los cambios nuevos
     };
 
-    this.productsService.update(id, dto).subscribe({
-      next: (updatedProduct) => {
-        this.products.update((prev) => {
-          const index = prev.findIndex((item) => item.id === id);
-          const newArray = [...prev];
-          newArray[index] = updatedProduct;
-          return newArray;
-        });
-        this.productChosen = updatedProduct;
-      },
-      error: (err) => console.error('Error abstracto:', err.error),
-    });
+    this.productsService.update(id, dto)
+    .subscribe({
+      next: (updateProduct) => {
+        this.productUpdated.emit(updateProduct);
+        this.productChosen = updateProduct;
+      }
+    })
+
+    // this.productsService.update(id, dto).subscribe({
+    //   next: (updatedProduct) => {
+    //     this.products.update((prev) => {
+    //       const index = prev.findIndex((item) => item.id === id);
+    //       const newArray = [...prev];
+    //       newArray[index] = updatedProduct;
+    //       return newArray;
+    //     });
+    //     this.productChosen = updatedProduct;
+    //   },
+    //   error: (err) => console.error('Error abstracto:', err.error),
+    // });
   }
 
   deleteProduct() {
@@ -190,24 +208,31 @@ export class ProductsComponent implements OnInit {
     const id = this.productChosen.id;
 
     this.productsService.delete(id)
-    .subscribe({
-      next: () => {
-        this.products.update((prev) => {
-          return prev.filter(item => item.id !== id);
-        });
-        this.productChosen = null;
+    .subscribe(
+      () => {
+        this.productDeleted.emit(id);
         this.showProductDetail = false;
-        console.log('Product delete with successful');
-      },
-      error: (err) => console.error('Error delete: ', err.error),
-    })
+      }
+    //   {
+    //   next: () => {
+    //     this.products.update((prev) => {
+    //       return prev.filter(item => item.id !== id);
+    //     });
+    //     this.productChosen = null;
+    //     this.showProductDetail = false;
+    //     console.log('Product delete with successful');
+    //   },
+    //   error: (err) => console.error('Error delete: ', err.error),
+    // }
+  )
   }
 
-  loadMore() {
-    this.productsService.getProductsByPage(this.limit, this.offset)
-    .subscribe(data => {
-    this.products.set(data);
-    this.offset += this.limit;
-    });
+  onloadMore() {
+    this.loadMore.emit()
+    // this.productsService.getProductsByPage(this.limit, this.offset)
+    // .subscribe(data => {
+    // this.products.set(data);
+    // this.offset += this.limit;
+    // });
   }
 }
