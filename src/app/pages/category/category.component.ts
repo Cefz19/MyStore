@@ -9,7 +9,7 @@ import { ProductsComponent } from '../../components/allproducts/products-compone
 @Component({
   selector: 'app-category.component',
   imports: [ProductsComponent],
-  templateUrl: './category.component.html',
+  template: `<app-products-component [products]="products()" (loadMore)="onLoadMore()" />`,
   styleUrl: './category.component.scss',
 })
 export class CategoryComponent {
@@ -24,15 +24,36 @@ export class CategoryComponent {
 
   ngOnInit() {
     this.route.paramMap
-    .subscribe((params) => {
-      this.categoryId = params.get('id');
-      if (this.categoryId) {
-        this.productService
-          .getByCategory(this.categoryId, this.limit, this.offset)
-          .subscribe((data) => {
-            this.products.set(data);
-          });
-      }
-    });
+      .pipe(
+        switchMap((params) => {
+          this.categoryId = params.get('id');
+          if (this.categoryId) {
+            return this.productService.getByCategory(this.categoryId, this.limit, this.offset);
+          }
+          return [];
+        }),
+      )
+      .subscribe((data) => {
+        this.products.set(data);
+      });
+
+    // .subscribe((params) => {
+    //   this.categoryId = params.get('id');
+    //   if (this.categoryId) {
+    //     return this.productService.getByCategory(this.categoryId, this.limit, this.offset);
+    //   }
+    //   return []
+    // })
+  }
+
+  onLoadMore() {
+    if (this.categoryId) {
+      this.productService
+        .getByCategory(this.categoryId, this.limit, this.offset)
+        .subscribe((data) => {
+          this.products.update((prev) => [...prev, ...data]);
+          this.offset += this.limit;
+        });
+    }
   }
 }

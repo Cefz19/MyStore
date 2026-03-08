@@ -31,7 +31,7 @@ export class HomeComponent {
   }
 
   onLoadMore() {
-    this.productsService.getProductsByPage(this.limit, this.offset)
+    this.productsService.getAllProducts(this.limit, this.offset)
     .subscribe((data) => {
       this.products.update(prev => [...prev, ...data]);
       this.offset += this.limit;

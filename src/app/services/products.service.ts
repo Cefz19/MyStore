@@ -13,7 +13,7 @@ import { environment } from '../../environments/environment';
 })
 export class ProductsService {
   // urlApi: string= 'https://fakestoreapi.com';
-  private urlApi = `${environment.API_URL}/api`;
+  private urlApi = `${environment.API_URL}/api/v1`;
   //  private urlApi = 'https://api.escuelaaajs.co';
   // urlApi: string= 'https://young-sands-07814.herokuapp.com/api/products';
 
@@ -24,7 +24,7 @@ export class ProductsService {
     if (limit !== undefined && offset !== undefined) {
       params = params.set('limit', limit).set('offset', offset);
   }
-  return this._http.get<Product[]>(`${this.urlApi}/v1/categories/${categoryId}/products`, { params })
+  return this._http.get<Product[]>(`${this.urlApi}/categories/${categoryId}/products`, { params })
 }
 
   getAllProducts(limit?: number, offset?: number) {
@@ -37,7 +37,7 @@ export class ProductsService {
     //   params = params.set('offset', offset);
     // }
 
-    return this._http.get<Product[]>(`${this.urlApi}/v1/products/`, { params, context: checkToken() }).pipe(
+    return this._http.get<Product[]>(`${this.urlApi}/products/`, { params, context: checkToken() }).pipe(
       retry(3),
       map((product) =>
         product.map((item) => ({
@@ -49,7 +49,7 @@ export class ProductsService {
   }
 
   getProdut(id: number) {
-    return this._http.get<Product>(`${this.urlApi}${id}`).pipe(
+    return this._http.get<Product>(`${this.urlApi}/products/${id}`).pipe(
       catchError((error: HttpErrorResponse) => {
         let message = 'Ups, something went wrong';
 
@@ -87,7 +87,7 @@ export class ProductsService {
   getProductsByPage(limit: number, offset: number) {
     let params = new HttpParams().set('limit', limit).set('offset', offset);
 
-    return this._http.get<Product[]>(`${this.urlApi}/v1/products/`, { params }).pipe(
+    return this._http.get<Product[]>(`${this.urlApi}/products/`, { params }).pipe(
       retry(3),
       map((products) =>
         products.map((item) => ({
@@ -102,14 +102,14 @@ export class ProductsService {
   }
 
   create(dto: CreateProductDTO) {
-    return this._http.post<Product>(`${this.urlApi}/v1/products/`, dto);
+    return this._http.post<Product>(`${this.urlApi}/products/`, dto);
   }
 
   update(id: number, dto: UpdateProductDTO) {
-    return this._http.put<Product>(`${this.urlApi}/v1/products/${id}`, dto);
+    return this._http.put<Product>(`${this.urlApi}/products/${id}`, dto);
   }
 
   delete(id: number) {
-    return this._http.delete<boolean>(`${this.urlApi}/v1/products/${id}`);
+    return this._http.delete<boolean>(`${this.urlApi}/products/${id}`);
   }
 }
