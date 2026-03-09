@@ -5,11 +5,12 @@ import { StoreService } from '../../../services/store.service';
 import { AuthService } from '../../../services/auth.service';
 
 import { User } from '../../../models/user.model';
+import { RouterLink } from "@angular/router";
 @Component({
   selector: 'app-nav-component',
   imports: [
-    // NgClass
-  ],
+    RouterLink
+],
   templateUrl: './nav-component.html',
   styleUrls: ['./nav-component.scss'],
 })
