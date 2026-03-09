@@ -15,9 +15,13 @@
   <div class="side-menu" [class.active]="activeMenu()">
     <button (click)="toggleMenu()">Close</button>
     <ul>
-      <li><a routerLink="home">All</a></li>
-      <li><a href="">Clothes</a></li>
-      <li><a href="">Electronics</a></li>
+      <ul>
+        <li><a routerLink="home">All</a></li>
+        @for (item of categories(); track  item.id) {
+        <li><a [routerLink]="['/category', item.id]">{{ item.name }}</a></li>
+      }
+      </ul>
+      
     </ul>
   </div>
 
@@ -31,9 +35,10 @@
         <img src="assets/svg/logo_yard_sale.svg" alt="logo">
       </a>
       <ul>
-        <li><a routerLink="home">All</a></li>
-        <li><a href="">Clothes</a></li>
-        <li><a href="">Electronics</a></li>
+        <li><a routerLink="home" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: true}">All</a></li>
+      @for (item of categories(); track  item.id) {
+        <li><a routerLinkActive="active" [routerLink]="['/category', item.id]">{{ item.name }}</a></li>
+      }
       </ul>
     </nav>
     <div class="info">

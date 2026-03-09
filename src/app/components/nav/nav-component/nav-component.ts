@@ -1,16 +1,16 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { StoreService } from '../../../services/store.service';
 // import { NgClass } from "../../../../../node_modules/@angular/common/types/_common_module-chunk";
 
 import { AuthService } from '../../../services/auth.service';
+import { CategoriesService } from '../../../services/categories.service';
 
 import { User } from '../../../models/user.model';
-import { RouterLink } from "@angular/router";
+import { Category } from '../../../models/product.model';
+import { RouterLink, RouterLinkActive  } from "@angular/router";
 @Component({
   selector: 'app-nav-component',
-  imports: [
-    RouterLink
-],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './nav-component.html',
   styleUrls: ['./nav-component.scss'],
 })
@@ -20,18 +20,21 @@ export class NavComponent implements OnInit {
 
   // token = signal('');
   profile = signal<User | null>(null);
+  categories = signal<Category[]>([]);
   // token = '';
   // profile: User | null = null;
 
-  constructor(
-    private storeService: StoreService,
-    private authService: AuthService,
-  ) {}
+  
+  storeService = inject(StoreService);
+  authService = inject(AuthService);
+  categoriesService = inject(CategoriesService);
+
 
   ngOnInit(): void {
     this.storeService.myCart$.subscribe((products) => {
       this.counter = products.length;
     });
+    this.getAllCategories();
   }
 
   toggleMenu() {
@@ -56,6 +59,12 @@ export class NavComponent implements OnInit {
     );
   }
 
+  getAllCategories() {
+    this.categoriesService.getAll()
+    .subscribe(data => {
+      this.categories.set(data)
+    })
+  }
   getProfile() {
     this.authService.getProfile()
     .subscribe(user => {
