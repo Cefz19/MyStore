@@ -7,43 +7,48 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { RecoveryComponent } from './pages/recovery/recovery.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { ProductDetailComponent } from './pages/product-detail.component/product-detail.component';
 
 export const routes: Routes = [
-    {
-        path: '',
-        redirectTo: '/home',
-        pathMatch: 'full'
-    },
-    {
-        path: 'home',
-        component: HomeComponent
-    },
-    {
-        path: 'category/:id',
-        component: CategoryComponent
-    },
-    {
-        path: 'login',
-        component: LoginComponent
-    },
-    {
-        path: 'my-cart',
-        component: MyCartComponent
-    },
-    {
-        path: 'not-found',
-        component: NotFoundComponent
-    },
-    {
-        path: 'profile',
-        component: ProfileComponent
-    },
-    {
-        path: 'recovery',
-        component: RecoveryComponent
-    },
-    {
-        path: 'register',
-        component: RegisterComponent
-    }
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+  },
+  {
+    path: 'category/:id',
+    component: CategoryComponent,
+  },
+  {
+    path: 'product/:id',
+    component: ProductDetailComponent,
+  },
+  {
+    path: 'my-cart',
+    component: MyCartComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+  },
+  {
+    path: 'recovery',
+    component: RecoveryComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
+  },
 ];

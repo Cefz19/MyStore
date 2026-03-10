@@ -48,6 +48,27 @@ export class ProductsService {
     );
   }
 
+  getOne(id: string) {
+    return this._http.get<Product>(`${this.urlApi}/products/${id}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let message = 'Ups, something went wrong';
+
+        switch (error.status) {
+          case HttpStatusCode.Conflict:
+            message = 'Critical server error';
+            break;
+          case HttpStatusCode.NotFound:
+            message = 'The product does not exit';
+            break;
+          case HttpStatusCode.Unauthorized:
+            message = 'Permission denied';
+            break;
+        }
+        return throwError(() => new Error(message));
+      }),
+    );
+  }
+
   getProdut(id: number) {
     return this._http.get<Product>(`${this.urlApi}/products/${id}`).pipe(
       catchError((error: HttpErrorResponse) => {
