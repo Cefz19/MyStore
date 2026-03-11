@@ -10,10 +10,7 @@ import { Product } from '../../../models/product.model';
 
 @Component({
   selector: 'app-product-detail.component',
-  imports: [
-    CommonModule,
-    CurrencyPipe,
-  ],
+  imports: [CommonModule, CurrencyPipe],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { CategoryComponent } from './pages/category/category.component';
-import { LoginComponent } from './pages/login/login.component';
-import { MyCartComponent } from './pages/my-cart/my-cart.component';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { ProfileComponent } from './pages/profile/profile.component';
-import { RecoveryComponent } from './pages/recovery/recovery.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { ProductDetailComponent } from './pages/product-detail.component/product-detail.component';
+import { HomeComponent } from './website/pages/home/home.component';
+import { CategoryComponent } from './website/pages/category/category.component';
+import { LoginComponent } from './website/pages/login/login.component';
+import { MyCartComponent } from './website/pages/my-cart/my-cart.component';
+import { NotFoundComponent } from './website/pages/not-found/not-found.component';
+import { ProfileComponent } from './website/pages/profiles/profile.component';
+import { RecoveryComponent } from './website/pages/recovery/recovery.component';
+import { RegisterComponent } from './website/pages/registers/register.component';
+import { ProductDetailComponent } from './website/pages/product-detail.components/product-detail.component';
 
 export const routes: Routes = [
   {
