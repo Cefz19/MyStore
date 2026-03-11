@@ -3,8 +3,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 
 import { FormsModule } from '@angular/forms';
-import { ProductsComponent } from './components/allproducts/products-component/products-component';
-import { NavComponent } from './components/nav/nav-component/nav-component';
+import { ProductsComponent } from './website/components/allproducts/products-component/products-component';
+import { NavComponent } from './website/components/nav/nav-component/nav-component';
 
 import { UsersService } from './services/users.service';
 import { FileService } from './services/file.service';

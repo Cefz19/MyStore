@@ -11,7 +11,7 @@ import {
 
 import { ReversePipe } from '../../../pipes/reverse.pipe';
 import { CurrencyPipe } from '@angular/common';
-import { Product } from '../../../models/product.model';
+import { Product } from '../../../../models/product.model';
 import { ImgComponent } from '../../img-componet/img-component';
 
 import { HighlightDirective } from '../../../directive/highlight.directive';

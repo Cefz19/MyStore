@@ -18,10 +18,10 @@ import { DatePipe } from '@angular/common';
 import { UpperCasePipe } from '@angular/common';
 import { TimeAgoPipe } from '../../../pipes/time-ago.pipe';
 
-import { Product, CreateProductDTO, UpdateProductDTO } from '../../../models/product.model';
+import { Product, CreateProductDTO, UpdateProductDTO } from '../../../../models/product.model';
 import { ProductComponent } from '../../products/product-component/product-component';
-import { StoreService } from '../../../services/store.service';
-import { ProductsService } from '../../../services/products.service';
+import { StoreService } from '../../../../services/store.service';
+import { ProductsService } from '../../../../services/products.service';
 import { set } from 'date-fns';
 import { ActivatedRoute } from '@angular/router';
 

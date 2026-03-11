@@ -1,12 +1,12 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
-import { StoreService } from '../../../services/store.service';
+import { StoreService } from '../../../../services/store.service';
 // import { NgClass } from "../../../../../node_modules/@angular/common/types/_common_module-chunk";
 
-import { AuthService } from '../../../services/auth.service';
-import { CategoriesService } from '../../../services/categories.service';
+import { AuthService } from '../../../../services/auth.service';
+import { CategoriesService } from '../../../../services/categories.service';
 
-import { User } from '../../../models/user.model';
-import { Category } from '../../../models/product.model';
+import { User } from '../../../../models/user.model';
+import { Category } from '../../../../models/product.model';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 @Component({
   selector: 'app-nav-component',
