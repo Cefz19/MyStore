@@ -48,7 +48,7 @@ export class ProductsService {
     );
   }
 
-  getOne(id: string) {
+  getOne(id: number) {
     return this._http.get<Product>(`${this.urlApi}/products/${id}`).pipe(
       catchError((error: HttpErrorResponse) => {
         let message = 'Ups, something went wrong';
