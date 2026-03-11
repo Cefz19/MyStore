@@ -30,7 +30,7 @@ export class ProductDetailComponent {
           this.productId.set(params.get('id'));
           const idValue = this.productId();
           if (idValue) {
-            return this.productService.getOne(idValue);
+            return this.productService.getOne(+idValue);
           }
           return [null];
         }),
