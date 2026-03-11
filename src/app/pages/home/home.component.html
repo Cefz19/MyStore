@@ -1,4 +1,5 @@
 <app-products-component 
+[productId]="productId()"
 [products]="products()"
 (loadMore)="onLoadMore()"
 (productDeleted)="onDeleteProduct($event)"

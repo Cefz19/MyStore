@@ -1,1 +1,46 @@
-<p>product-detail.component works!</p>
+<div class="page-product">
+    <button (click)="goToBack()">Back</button>
+
+    @if (product(); as currentProduct) {
+    <div class="detail">
+        <div class="gallery">
+            <swiper-container slides-per-view="1" navigation="true" pagination="true">
+                @for (img of currentProduct.images; track img) {
+                <swiper-slide>
+                    <!-- NgOptimizedImage para rendimiento LCP -->
+                    <img [src]="img" width="400" height="600" alt="Imagen del producto" priority />
+                </swiper-slide>
+                } @empty {
+                    <p>No images available</p>
+                }
+            </swiper-container>
+        </div>
+        <div>
+            <h2>{{ product()?.title }}</h2>
+            <h3>{{ product()?.price | currency }}</h3>
+            <p>{{ product()?.description }}</p>
+        </div>
+    </div>
+    }
+</div>
+
+<!-- 
+<div class="page-product">
+  <button (click)="goToBack()">Back</button>
+  <div class="detail" *ngIf="product">
+    <div class="gallery">
+      <swiper-container [slidesPerView]="1">
+        <ng-template swiperSlide *ngFor="let img of product()?.images">
+          <img [src]="img" alt="img" />
+        </ng-template>
+      </swiper-container>
+    </div>
+    <div>
+      <h2>{{ product()?.title }}</h2>
+      <h3>{{ product()?.price | currency }}</h3>
+      <p>{{ product()?.description }}</p>
+    </div>
+  </div>
+</div>
+
+ -->

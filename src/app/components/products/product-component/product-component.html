@@ -1,6 +1,9 @@
 @if(product(); as p) {
 @if(p.images && p.images.length > 0){
-<app-img-component [img]="p.images[0]" [alt]="p.title" />
+<a [routerLink]="['/product', product().id]">
+    <app-img-component [img]="p.images[0]" [alt]="p.title" />
+</a>
+
 }
 <h2>{{ p.price | currency: 'MXN' }}</h2>
 
@@ -13,7 +16,7 @@
 <p>{{ p.title }}</p>
 
 <!-- <p appHighlightDirective>{{ item.description }}</p> -->
-<button (click)="onShowDetail()">See Details</button>
+<!-- <button (click)="onShowDetail()">See Details</button> -->
+ <a routerLink="." [queryParams]="{ product: product().id }">See Details</a>
 <button (click)="onAddToCart()">Add Cart</button>
 }
-

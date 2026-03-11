@@ -1,4 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+
+import { ActivatedRoute } from '@angular/router';
 import { ProductsComponent } from "../../components/allproducts/products-component/products-component";
 import { ProductsService } from '../../services/products.service';
 import { Product } from '../../models/product.model';
@@ -14,12 +16,21 @@ export class HomeComponent {
   products = signal<Product[]>([]);
   limit = 10;
   offset = 0;
+  productId = signal<string | null>(null);
 
+  route = inject(ActivatedRoute)
   constructor(
     private productsService: ProductsService,
   ) {}
+
   ngOnInit() {
-    this.onLoadMore()
+    this.onLoadMore();
+    this.route.queryParamMap.subscribe(params => {
+      const id = params.get('product');
+      this.productId.set(id) 
+      console.log(id);
+      
+    })
     // this.productsService.getAllProducts().subscribe((data) => {
     // this.products.set(data);
     // });

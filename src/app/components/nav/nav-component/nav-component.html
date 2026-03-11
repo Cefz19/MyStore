@@ -17,7 +17,7 @@
     <ul>
       <ul>
         <li><a routerLink="home">All</a></li>
-        @for (item of categories(); track  item.id) {
+        @for (item of filteredCategories(); track  item.id) {
         <li><a [routerLink]="['/category', item.id]">{{ item.name }}</a></li>
       }
       </ul>
@@ -36,7 +36,7 @@
       </a>
       <ul>
         <li><a routerLink="home" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: true}">All</a></li>
-      @for (item of categories(); track  item.id) {
+      @for (item of filteredCategories(); track  item.id) {
         <li><a routerLinkActive="active" [routerLink]="['/category', item.id]">{{ item.name }}</a></li>
       }
       </ul>

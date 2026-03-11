@@ -7,22 +7,16 @@ import { register } from 'swiper/element/bundle';
 import { routes } from './app.routes';
 import { timeInterceptor } from './interceptors/time-interceptor';
 import { tokenInterceptor } from './interceptors/token-interceptor';
-
+import { errorInterceptor } from './interceptors/error.interceptor-interceptor';
 
 register();
 export const appConfig: ApplicationConfig = {
-  
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(
       withFetch(),
-      withInterceptors([
-        timeInterceptor,
-        tokenInterceptor,
-      ])
-  ),
-
-    
-  ]
+      withInterceptors([timeInterceptor, tokenInterceptor, errorInterceptor]),
+    ),
+  ],
 };

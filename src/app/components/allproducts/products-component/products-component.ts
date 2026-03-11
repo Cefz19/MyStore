@@ -1,4 +1,13 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, input, output } from '@angular/core';
+import {
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  inject,
+  Input,
+  input,
+  numberAttribute,
+  output,
+  signal,
+} from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
@@ -13,6 +22,8 @@ import { Product, CreateProductDTO, UpdateProductDTO } from '../../../models/pro
 import { ProductComponent } from '../../products/product-component/product-component';
 import { StoreService } from '../../../services/store.service';
 import { ProductsService } from '../../../services/products.service';
+import { set } from 'date-fns';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-products-component',
@@ -32,11 +43,23 @@ export class ProductsComponent {
   total = 0;
 
   products = input<Product[]>([]);
+  // 1. La señal nace NULL
+  route = inject(ActivatedRoute);
+
+  @Input({ transform: numberAttribute })
+  set productId(id: number | null) {
+    // 5. BLOQUEO CRÍTICO: Solo abre el detalle si el ID es válido y > 0
+    if (id && id > 0) {
+      this.onShowDetail(id);
+    } else {
+      this.showProductDetail = false; // Cerramos si llega null
+    }
+  }
+
   productDeleted = output<number>();
   productAdded = output<Product>();
   productUpdated = output<Product>();
-  loadMore = output<void>()
-
+  loadMore = output<void>();
 
   showProductDetail = false;
   productChosen: Product | null = {
@@ -98,9 +121,9 @@ export class ProductsComponent {
   }
 
   // ngOnInit() {
-    // this.productsService.getAllProducts().subscribe((data) => {
-    // this.products.set(data);
-    // });
+  // this.productsService.getAllProducts().subscribe((data) => {
+  // this.products.set(data);
+  // });
 
   //   this.productsService.getProductsByPage(10, 0).subscribe((data) => {
   //   this.products.set(data);
@@ -118,34 +141,33 @@ export class ProductsComponent {
 
   onShowDetail(id: number) {
     this.statusDetail = 'loading';
-    this.toggleProductDetail();
-    this.productsService.getProdut(id)
-    .subscribe({
-      next: (data) => {
-      this.productChosen = data;
-      this.statusDetail = 'success';
-    },
-    error: (errorMeg) => {
-      window.alert(errorMeg);
-      this.statusDetail = 'error';
+    if (!this.showProductDetail) {
+      this.showProductDetail = true;
     }
+    this.productsService.getProdut(id).subscribe({
+      next: (data) => {
+        this.productChosen = data;
+        this.statusDetail = 'success';
+      },
+      error: (errorMeg) => {
+        window.alert(errorMeg);
+        this.statusDetail = 'error';
+      },
     });
   }
 
   readAndUpdate(id: number) {
     //Callback Hell
-    this.productsService.getProdut(id)
-    .pipe(
-      switchMap((product) => this.productsService.update(product.id, {title: 'chage'})),
-    )
-    .subscribe(data => {
-      console.log(data);
-    })
-    this.productsService.fetchReadAndUpdate(id, {title: 'change'})
-    .subscribe(response => {
+    this.productsService
+      .getProdut(id)
+      .pipe(switchMap((product) => this.productsService.update(product.id, { title: 'chage' })))
+      .subscribe((data) => {
+        console.log(data);
+      });
+    this.productsService.fetchReadAndUpdate(id, { title: 'change' }).subscribe((response) => {
       const read = response[0];
       const update = response[1];
-    })
+    });
   }
 
   createNewProduct() {
@@ -157,10 +179,9 @@ export class ProductsComponent {
       categoryId: 1,
     };
 
-    this.productsService.create(product)
-    .subscribe((data) => {
-      this.productAdded.emit(data)
-    })
+    this.productsService.create(product).subscribe((data) => {
+      this.productAdded.emit(data);
+    });
 
     // this.productsService.create(product).subscribe((data) => {
     //   this.products.update((prevData) => [data, ...prevData]);
@@ -181,13 +202,12 @@ export class ProductsComponent {
       ...changes, // 3. Sobrescribimos SOLO con los cambios nuevos
     };
 
-    this.productsService.update(id, dto)
-    .subscribe({
+    this.productsService.update(id, dto).subscribe({
       next: (updateProduct) => {
         this.productUpdated.emit(updateProduct);
         this.productChosen = updateProduct;
-      }
-    })
+      },
+    });
 
     // this.productsService.update(id, dto).subscribe({
     //   next: (updatedProduct) => {
@@ -204,31 +224,30 @@ export class ProductsComponent {
   }
 
   deleteProduct() {
-    if(!this.productChosen) return;
+    if (!this.productChosen) return;
     const id = this.productChosen.id;
 
-    this.productsService.delete(id)
-    .subscribe(
+    this.productsService.delete(id).subscribe(
       () => {
         this.productDeleted.emit(id);
         this.showProductDetail = false;
-      }
-    //   {
-    //   next: () => {
-    //     this.products.update((prev) => {
-    //       return prev.filter(item => item.id !== id);
-    //     });
-    //     this.productChosen = null;
-    //     this.showProductDetail = false;
-    //     console.log('Product delete with successful');
-    //   },
-    //   error: (err) => console.error('Error delete: ', err.error),
-    // }
-  )
+      },
+      //   {
+      //   next: () => {
+      //     this.products.update((prev) => {
+      //       return prev.filter(item => item.id !== id);
+      //     });
+      //     this.productChosen = null;
+      //     this.showProductDetail = false;
+      //     console.log('Product delete with successful');
+      //   },
+      //   error: (err) => console.error('Error delete: ', err.error),
+      // }
+    );
   }
 
   onloadMore() {
-    this.loadMore.emit()
+    this.loadMore.emit();
     // this.productsService.getProductsByPage(this.limit, this.offset)
     // .subscribe(data => {
     // this.products.set(data);
