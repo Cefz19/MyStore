@@ -11,8 +11,8 @@ import { FileService } from './services/file.service';
 
 @Component({
   selector: 'app-root',
-  imports: [FormsModule, NavComponent, RouterOutlet],
-  templateUrl: './app.html',
+  imports: [RouterOutlet],
+  template: `<router-outlet />`,
   styleUrls: ['./app.scss'],
 })
 export class App {
