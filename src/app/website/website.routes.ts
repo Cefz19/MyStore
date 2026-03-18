@@ -9,9 +9,8 @@ import { RecoveryComponent } from './../website/pages/recovery/recovery.componen
 import { RegisterComponent } from './../website/pages/registers/register.component';
 import { ProductDetailComponent } from './../website/pages/product-detail.components/product-detail.component';
 
-
-export const webRoutes: Routes =  [
-     {
+export const webRoutes: Routes = [
+  {
     path: '',
     component: LayoutComponent,
     children: [
@@ -26,7 +25,11 @@ export const webRoutes: Routes =  [
       },
       {
         path: 'category',
-        loadChildren: () => import('./pages/category/category.routes').then((m) => m.categoryRoutes),
+        loadChildren: () =>
+          import('./pages/category/category.routes').then((m) => m.categoryRoutes),
+        data: {
+          preload: true,
+        },
       },
       {
         path: 'product/:id',
@@ -54,4 +57,4 @@ export const webRoutes: Routes =  [
       },
     ],
   },
-]
+];
