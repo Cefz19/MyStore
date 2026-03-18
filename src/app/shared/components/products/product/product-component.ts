@@ -9,12 +9,12 @@ import {
   inject,
 } from '@angular/core';
 
-import { ReversePipe } from '../../../pipes/reverse.pipe';
+import { ReversePipe } from '../../../pipe/reverse.pipe';
 import { CurrencyPipe } from '@angular/common';
 import { Product } from '../../../../models/product.model';
 import { ImgComponent } from '../../img-componet/img-component';
 
-import { HighlightDirective } from '../../../directive/highlight.directive';
+import { HighlightDirective } from '../../../directives/highlight.directive';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({

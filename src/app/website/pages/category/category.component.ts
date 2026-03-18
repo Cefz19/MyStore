@@ -4,9 +4,10 @@ import { switchMap } from 'rxjs/operators';
 
 import { ProductsService } from '../../../services/products.service';
 import { Product } from '../../../models/product.model';
-import { ProductsComponent } from '../../components/allproducts/products-component/products-component';
+import { ProductsComponent } from '../../../shared/components/allproducts/products.component';
 
 @Component({
+  standalone: true,
   selector: 'app-category.component',
   imports: [ProductsComponent],
   template: `<app-products-component [products]="products()" (loadMore)="onLoadMore()" />`,

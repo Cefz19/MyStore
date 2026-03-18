@@ -16,16 +16,17 @@ import { switchMap } from 'rxjs/operators';
 
 import { DatePipe } from '@angular/common';
 import { UpperCasePipe } from '@angular/common';
-import { TimeAgoPipe } from '../../../pipes/time-ago.pipe';
+import { TimeAgoPipe } from '../../pipe/time-ago.pipe';
 
-import { Product, CreateProductDTO, UpdateProductDTO } from '../../../../models/product.model';
-import { ProductComponent } from '../../products/product-component/product-component';
-import { StoreService } from '../../../../services/store.service';
-import { ProductsService } from '../../../../services/products.service';
+import { Product, CreateProductDTO, UpdateProductDTO } from '../../../models/product.model';
+import { ProductComponent } from '../products/product/product-component';
+import { StoreService } from '../../../services/store.service';
+import { ProductsService } from '../../../services/products.service';
 import { set } from 'date-fns';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
+  standalone: true,
   selector: 'app-products-component',
   imports: [
     CommonModule,
@@ -34,8 +35,8 @@ import { ActivatedRoute } from '@angular/router';
     // UpperCasePipe,
     // TimeAgoPipe
   ],
-  templateUrl: './products-component.html',
-  styleUrls: ['./products-component.scss'],
+  templateUrl: './products.component.html',
+  styleUrls: ['./products.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ProductsComponent {

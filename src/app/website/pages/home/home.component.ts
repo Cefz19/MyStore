@@ -1,11 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
-import { ProductsComponent } from '../../components/allproducts/products-component/products-component';
+import { ProductsComponent } from '../../../shared/components/allproducts/products.component';
 import { ProductsService } from '../../../services/products.service';
 import { Product } from '../../../models/product.model';
 
 @Component({
+  standalone: true,
   selector: 'app-home.component',
   imports: [ProductsComponent],
   templateUrl: './home.component.html',

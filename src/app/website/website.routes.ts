@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 
 import { LayoutComponent } from './../website/components/layout.component/layout.component';
 import { HomeComponent } from './../website/pages/home/home.component';
-import { CategoryComponent } from './../website/pages/category/category.component';
 import { LoginComponent } from './../website/pages/login/login.component';
 import { MyCartComponent } from './../website/pages/my-cart/my-cart.component';
 import { ProfileComponent } from './../website/pages/profiles/profile.component';
@@ -26,8 +25,8 @@ export const webRoutes: Routes =  [
         component: HomeComponent,
       },
       {
-        path: 'category/:id',
-        component: CategoryComponent,
+        path: 'category',
+        loadChildren: () => import('./pages/category/category.routes').then((m) => m.categoryRoutes),
       },
       {
         path: 'product/:id',
