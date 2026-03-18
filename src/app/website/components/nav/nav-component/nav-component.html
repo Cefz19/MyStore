@@ -47,7 +47,7 @@
         @if (!profile()){
         <button (click)="login()">Login</button>
         } @else {
-        <p>{{ profile()?.email }}</p>
+        <a routerLink="/profile">{{ profile()?.email }}</a>
         }
       </div>
       <div>

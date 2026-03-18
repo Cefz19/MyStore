@@ -8,6 +8,7 @@ import { ProfileComponent } from './../website/pages/profiles/profile.component'
 import { RecoveryComponent } from './../website/pages/recovery/recovery.component';
 import { RegisterComponent } from './../website/pages/registers/register.component';
 import { ProductDetailComponent } from './../website/pages/product-detail.components/product-detail.component';
+import { authGuard } from '../guards/auth-guard';
 
 export const webRoutes: Routes = [
   {
@@ -45,7 +46,9 @@ export const webRoutes: Routes = [
       },
       {
         path: 'profile',
+        canActivate: [ authGuard ],
         component: ProfileComponent,
+        
       },
       {
         path: 'recovery',

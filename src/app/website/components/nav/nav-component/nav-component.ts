@@ -8,9 +8,10 @@ import { CategoriesService } from '../../../../services/categories.service';
 import { User } from '../../../../models/user.model';
 import { Category } from '../../../../models/product.model';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { QuicklinkDirective } from 'ngx-quicklink';
 @Component({
   selector: 'app-nav-component',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [QuicklinkDirective, RouterLink, RouterLinkActive],
   templateUrl: './nav-component.html',
   styleUrls: ['./nav-component.scss'],
 })

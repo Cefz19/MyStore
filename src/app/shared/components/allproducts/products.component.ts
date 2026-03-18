@@ -172,16 +172,24 @@ export class ProductsComponent {
   }
 
   createNewProduct() {
+    const currentProducts = this.products();
+    const validCategoryId = currentProducts.length > 0 ? currentProducts[0].category.id : 1;
     const product: CreateProductDTO = {
       title: `New Product ${Date.now()}`,
       description: 'bla bla bla',
       images: ['https://placehold.co/600x400/transparent/F00'],
       price: 100,
-      categoryId: 1,
+      categoryId: validCategoryId,
     };
 
-    this.productsService.create(product).subscribe((data) => {
+    this.productsService.create(product).subscribe({
+      next: (data) => {
       this.productAdded.emit(data);
+    },
+    error: (err) => {
+      console.log('Error al crear:', err);
+      
+    }
     });
 
     // this.productsService.create(product).subscribe((data) => {

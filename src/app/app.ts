@@ -34,6 +34,7 @@ export class App {
         email: 'sebas@mail.com',
         password: '1212',
         avatar: 'https://picsum.photos',
+        role: 'customer',
       })
       .subscribe((rta) => {
         console.log(rta);

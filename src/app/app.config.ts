@@ -1,6 +1,7 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
 import { CustomPreloadService } from './services/custom-preload.service';
+import { QuicklinkStrategy, quicklinkProviders } from 'ngx-quicklink';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 
 import { register } from 'swiper/element/bundle';
@@ -14,10 +15,12 @@ register();
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    quicklinkProviders,
     provideRouter(
       routes,
       withPreloading(
-        CustomPreloadService,
+        QuicklinkStrategy
+        // CustomPreloadService,
         // PreloadAllModules
       )
     ),
