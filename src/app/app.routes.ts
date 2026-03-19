@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 
 import { NotFoundComponent } from './website/pages/not-found/not-found.component';
-
+import { adminGuard } from './guards/admin-guard';
+import { authGuard } from './guards/auth-guard';
 export const routes: Routes = [
   {
     path: '',
@@ -12,6 +13,7 @@ export const routes: Routes = [
   },
   {
     path: 'mcms',
+    canActivate: [authGuard],
     loadChildren: () => import('./mcms/mcms.routes').then((m) => m.routesMcms),
   },
   {

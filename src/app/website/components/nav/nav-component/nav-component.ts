@@ -1,4 +1,6 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { Router } from '@angular/router'
+
 import { StoreService } from '../../../../services/store.service';
 // import { NgClass } from "../../../../../node_modules/@angular/common/types/_common_module-chunk";
 
@@ -28,6 +30,7 @@ export class NavComponent implements OnInit {
   storeService = inject(StoreService);
   authService = inject(AuthService);
   categoriesService = inject(CategoriesService);
+  router = inject(Router);
 
   // Solo un filter, limpio y directo
   filteredCategories = computed(() => {
@@ -71,6 +74,11 @@ export class NavComponent implements OnInit {
     this.storeService.myCart$.subscribe((products) => {
       this.counter = products.length;
     });
+
+    this.authService.user$
+    .subscribe(data => {
+      this.profile.set(data)
+    })
   }
 
   toggleMenu() {
@@ -78,10 +86,12 @@ export class NavComponent implements OnInit {
   }
 
   login() {
-    this.authService.loginAndGet('john@mail.com', 'changeme').subscribe(
+    // 'john@mail.com', 'changeme'
+    this.authService.loginAndGet('admin@mail.com', 'admin123').subscribe(
       {
         next: (user) => {
-          this.profile.set(user);
+          // this.profile.set(user);
+          this.router.navigate(['/profile']);
           console.log('Login exitoso:', user);
         },
         error: (err) => {
@@ -105,5 +115,10 @@ export class NavComponent implements OnInit {
     this.authService.getProfile().subscribe((user) => {
       this.profile.set(user);
     });
+  }
+  logout() {
+    this.authService.logout();
+    this.profile.set(null);
+    this.router.navigate(['/home']);
   }
 }

@@ -9,6 +9,7 @@ import { RecoveryComponent } from './../website/pages/recovery/recovery.componen
 import { RegisterComponent } from './../website/pages/registers/register.component';
 import { ProductDetailComponent } from './../website/pages/product-detail.components/product-detail.component';
 import { authGuard } from '../guards/auth-guard';
+import { exitGuard } from '../guards/exit-guard';
 
 export const webRoutes: Routes = [
   {
@@ -56,6 +57,7 @@ export const webRoutes: Routes = [
       },
       {
         path: 'register',
+        canDeactivate: [exitGuard],
         component: RegisterComponent,
       },
     ],

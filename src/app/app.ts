@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 
@@ -7,6 +7,9 @@ import { NavComponent } from './website/components/nav/nav-component/nav-compone
 
 import { UsersService } from './services/users.service';
 import { FileService } from './services/file.service';
+import { AuthService } from './services/auth.service';
+import { TokenService } from './services/token.service';
+
 
 @Component({
   selector: 'app-root',
@@ -20,6 +23,9 @@ export class App {
   // token =  '';
   imgRta: SafeUrl | string | null = null;
   urlPure: string = '';
+
+  authService = inject(AuthService);
+  tokenService = inject(TokenService);
 
   constructor(
     private usersService: UsersService,

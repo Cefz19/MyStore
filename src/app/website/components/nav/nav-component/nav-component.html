@@ -48,6 +48,7 @@
         <button (click)="login()">Login</button>
         } @else {
         <a routerLink="/profile">{{ profile()?.email }}</a>
+        <button (click)="logout()">Logout</button>
         }
       </div>
       <div>
