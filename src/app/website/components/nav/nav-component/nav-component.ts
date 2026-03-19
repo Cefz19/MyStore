@@ -78,10 +78,11 @@ export class NavComponent implements OnInit {
   }
 
   login() {
-    this.authService.loginAndGet('sebas@mail.com', '1212').subscribe(
+    this.authService.loginAndGet('john@mail.com', 'changeme').subscribe(
       {
         next: (user) => {
           this.profile.set(user);
+          console.log('Login exitoso:', user);
         },
         error: (err) => {
           console.error('Error in the login o profile', err);
