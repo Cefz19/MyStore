@@ -1,12 +1,26 @@
-          - name: Install and Build
-            run: |
-              npm install
-              # Usamos el nombre 'my-store' que está en tu angular.json
-              npx ng build --configuration production --base-href /MyStore/
+name: Deploy a GitHub Pages
 
-          - name: Deploy
-            uses: JamesIves/github-pages-deploy-action@v4
-            with:
-              # Esta es la ruta exacta basada en tu configuración
-              folder: dist/my-store/browser
-              branch: gh-pages
+on:
+  push:
+    branches:
+      - main  # Asegúrate de que este sea el nombre de tu rama principal
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install and Build
+        run: |
+          npm install
+          # Reemplaza 'MyStore' con el nombre exacto de tu REPOSITORIO en GitHub
+          npx ng build --configuration production --base-href /MyStore/
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          # CAMBIO CLAVE: Aquí usamos 'my-store' que es el nombre en tu angular.json
+          folder: dist/my-store/browser
+          branch: gh-pages
