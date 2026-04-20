@@ -1,0 +1,25 @@
+name: Deploy a GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # O el nombre de tu rama principal
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install and Build
+        run: |
+          npm install
+          # Reemplaza 'nombre-tu-repo' por el nombre de tu repositorio
+          npx ng build --configuration production --base-href /nombre-tu-repo/
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist/nombre-tu-proyecto/browser # Ajusta según tu carpeta dist
+          branch: gh-pages
